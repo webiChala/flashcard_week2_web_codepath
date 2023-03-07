@@ -32,7 +32,7 @@ Here's a walkthrough of implemented required features:
 
 <img src='Walkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-GIF created with 
+GIF created with LICEcap
 
 ## Notes
 
@@ -40,7 +40,7 @@ It was difficult using useState and trying to flip the picture without messing t
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2023] [Webi Chala]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
