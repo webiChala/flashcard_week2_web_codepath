@@ -16,41 +16,93 @@ import sandraName from '/sandra.png'
 
 
 function App() {
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const [currentView, setCurrentView] = useState("img");
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   
 
-  const celebrities = {1:{"Name": tomHanksName, "img": Tom},
-                        2:{"Name": tomcruiseName, "img": tomcruise},
-                        3:{"Name": denzelName, "img": Denzel},
-                        4:{"Name": sandraName, "img": Sandra}}
+  const [celebrities, setCelebrities] = useState([{"Name": tomHanksName, "img": Tom, "text": "Tom Hanks"},
+                        {"Name": tomcruiseName, "img": tomcruise, "text": "Tom Cruise"},
+                        {"Name": denzelName, "img": Denzel, "text": "Denzel Washington"},
+                        {"Name": sandraName, "img": Sandra, "text": "Sandra Bullock"}])
 
-  const [image, setImage] = useState(celebrities[1].img);
 
   const handleBackward = () => {
     if (isFlipped) {
       handleCardClick()
     }
 
-    if (currentIndex > 1) {
+    if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
-      setImage(celebrities[currentIndex].img)
+      setInputValue('')
+      setSubmitStatus(false);
     }
+    
   };
 
   const handleForward = () => {
+    
     if (isFlipped) {
       handleCardClick()
     }
-    if (currentIndex != 4) {
+    if (currentIndex != 3) {
       setCurrentIndex(currentIndex + 1);
+      setInputValue('')
+      setSubmitStatus(false);
     }
+    
   };
 
   const handleCardClick = () => {
     setIsFlipped(!isFlipped);
 
+  };
+
+  const [inputValue, setInputValue] = useState('');
+
+  const [submitted, setSubmitStatus] = useState(false);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Do something with the input value, such as submit it to a server
+    setSubmitStatus(true);
+  };
+
+  const getInputClassName = () => {
+    if (submitted === false) {
+      return '';
+    } else {
+      
+      if (inputValue === celebrities[currentIndex].text) {
+        
+        return 'valid';
+      } else {
+        
+        return 'invalid';
+      }
+      
+    }
+    
+  };
+
+  function shuffleList(list) {
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      if (i == currentIndex || j == currentIndex) {
+        continue;
+      }
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    return list;
+  }
+
+  const shuffleCard = () => {
+      setCelebrities(shuffleList(celebrities))
+      console.log(celebrities)
+  }
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+    setSubmitStatus(false);
   };
 
   return (
@@ -79,6 +131,19 @@ function App() {
               <button onClick={handleForward}>
                   <span>&rarr;</span>
               </button>
+              <button className="click-effect" onClick={shuffleCard}>
+                Shuffle
+              </button>
+          </div>
+
+          <div className='guessInput'>
+            <form onSubmit={handleSubmit}>
+              <label>
+                Guess:
+                <input placeholder='Enter your answer' value={inputValue} className={getInputClassName()} type="text" onChange={handleInputChange} />
+              </label>
+              <button type="submit">Submit</button>
+            </form>
           </div>
         </div>
       </div>
